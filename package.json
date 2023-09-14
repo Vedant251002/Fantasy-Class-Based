@@ -7,11 +7,7 @@
     "start:build": "tsc -w",
     "start:run": "nodemon dist/index.js",
     "start": "concurrently npm:start:*"
-  }
-,  
+  },
   "author": "",
-  "license": "ISC",
-  "dependencies": {
-    "concurrently": "^8.2.1"
-  }
+  "license": "ISC"
 }
