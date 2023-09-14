@@ -9,8 +9,8 @@ let team2 = new Team('CSK')
 let match = new Match(team1 , team2);
 match.toss();
 
-team1 = match.showBattingTeam();
-team2 = match.showBowlingTeam();
+team1 = match.getBattingTeam();
+team2 = match.getBowlingTeam();
 
 let playerMap = new PlayerMapper();
 let playersArray = playersData.map(player => {

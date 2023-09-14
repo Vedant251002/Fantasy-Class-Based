@@ -16,11 +16,11 @@ export class Team{
         }
     }
 
-    showTeam(){
+    getTeam(){
         return this
     }
 
-    showTeamPlayers(){
+    getTeamPlayers(){
         return this.players
     }
 
@@ -42,7 +42,6 @@ export class Team{
         players.map(player => {
             totalCredit += player.getCredit();
         })
-        // console.log(totalCredit);
         if(totalCredit > 100){
             return true
         }
