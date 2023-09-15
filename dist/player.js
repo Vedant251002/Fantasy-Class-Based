@@ -21,5 +21,8 @@ class Player {
     getCredit() {
         return this.credit;
     }
+    getRole() {
+        return this.role;
+    }
 }
 exports.Player = Player;

@@ -1,7 +1,7 @@
 import { Player } from "./player";
 
 export default class PlayerMapper{
-    toDomain(player : any){
+    static toDomain(player : any) : Player{
         return new Player( player.id , player.name , player.playingRole , player.credit);
     }
 }

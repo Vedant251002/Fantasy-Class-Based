@@ -5,7 +5,7 @@ exports.playersData = [
     {
         id: 1,
         name: "Virat Kohli",
-        playingRole: "Batsman",
+        playingRole: "Wicketkeeper",
         credit: 10,
     },
     {

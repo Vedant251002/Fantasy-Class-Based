@@ -1,9 +1,10 @@
 
 export class Player{
-    private id
-    private name
-    private role
-    private credit
+    private id : number
+    private name : string 
+    private role : string 
+    private credit : number 
+    
     constructor( id : number, name : string , role : string , credit : number){
         this.id = id;
         this.name = name;
@@ -11,13 +12,16 @@ export class Player{
         this.credit = credit;        
     }
 
-    getPlayer(){
+    getPlayer() : Player {
         return this
     }
-    getId(){
+    getId() : number {
         return this.id
     }
-    getCredit(){
+    getCredit() : number {
         return this.credit
+    }
+    getRole() : string {
+        return this.role
     }
 }

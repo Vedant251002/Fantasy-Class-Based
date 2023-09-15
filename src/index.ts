@@ -12,14 +12,18 @@ match.toss();
 team1 = match.getBattingTeam();
 team2 = match.getBowlingTeam();
 
-let playerMap = new PlayerMapper();
 let playersArray = playersData.map(player => {
-  return playerMap.toDomain(player);
+  return PlayerMapper.toDomain(player);
 })
 
 
 let players = playersArray.slice(0,11)
 team1.addPlayer(players)
+
+team1.setCaptain(1)
+team1.setViceCaptain(2)
+
+// console.log(match.getBattingTeam().getTeamPlayers());
 
 let players2 = playersArray.slice(11,22)
 team2.addPlayer(players2)

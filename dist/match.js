@@ -19,16 +19,16 @@ class Match {
             this.bowlingTeam = temp;
         }
     }
-    showBattingTeam() {
+    getBattingTeam() {
         return this.battingTeam;
     }
-    showBowlingTeam() {
+    getBowlingTeam() {
         return this.bowlingTeam;
     }
-    showTossWinnerTeam() {
+    getTossWinnerTeam() {
         return this.battingTeam;
     }
-    showTossLoserTeam() {
+    getTossLoserTeam() {
         return this.bowlingTeam;
     }
 }

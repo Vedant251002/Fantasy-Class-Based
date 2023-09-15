@@ -11,7 +11,7 @@ export class Match {
         this.battingTeam = team1;
         this.bowlingTeam = team2;
     }
-    toss() {
+    toss() : void{
         let random = Math.floor(Math.random() * 2);
         if (random == 1) {
             let temp = this.battingTeam

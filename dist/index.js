@@ -11,14 +11,16 @@ let team1 = new team_1.Team('RCB');
 let team2 = new team_1.Team('CSK');
 let match = new match_1.Match(team1, team2);
 match.toss();
-team1 = match.showBattingTeam();
-team2 = match.showBowlingTeam();
-let playerMap = new mapper_1.default();
+team1 = match.getBattingTeam();
+team2 = match.getBowlingTeam();
 let playersArray = playersData_1.playersData.map(player => {
-    return playerMap.toDomain(player);
+    return mapper_1.default.toDomain(player);
 });
 let players = playersArray.slice(0, 11);
 team1.addPlayer(players);
-let players2 = playersArray.slice(11, 22);
-team2.addPlayer(players2);
+team1.setCaptain(1);
+team1.setViceCaptain(2);
+console.log(match.getBattingTeam().getTeamPlayers());
+// let players2 = playersArray.slice(11,22)
+// team2.addPlayer(players2)
 team1.removePlayer(1);
