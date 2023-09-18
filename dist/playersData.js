@@ -71,13 +71,13 @@ exports.playersData = [
     {
         id: 12,
         name: "Ravichandran Ashwin",
-        playingRole: "Bowler",
-        credit: 11,
+        playingRole: "Batsman",
+        credit: 1,
     },
     {
         id: 13,
         name: "Deepak Chahar",
-        playingRole: "Bowler",
+        playingRole: "Batsman",
         credit: 9,
     },
     {
@@ -95,19 +95,19 @@ exports.playersData = [
     {
         id: 16,
         name: "Ishan Kishan",
-        playingRole: "Bowler",
+        playingRole: "Batsman",
         credit: 10,
     },
     {
         id: 17,
         name: "Shreyas Iyer",
-        playingRole: "Batsman",
+        playingRole: "Bowler",
         credit: 10,
     },
     {
         id: 18,
         name: "Venkatesh Iyer",
-        playingRole: "Wicketkeeper",
+        playingRole: "Bowler",
         credit: 9,
     },
     {

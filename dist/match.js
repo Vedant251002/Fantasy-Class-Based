@@ -34,45 +34,59 @@ class Match {
     getTossLoserTeam() {
         return this.bowlingTeam;
     }
+    getCurrentBatsman() {
+        return this.currentBatsman;
+    }
+    getCurrentBowler() {
+        return this.currentBowler;
+    }
     startGame() {
         this.battingTeam.sortPlayers();
         this.bowlingTeam.sortPlayers();
         this.currentBatsman = this.battingTeam.getPlayers()[0];
         this.currentBowler = this.bowlingTeam.getPlayers()[5];
-        this.hit();
-        this.hit();
     }
     hit() {
+        this.currentBowler.addBalls();
         let shot = player_1.Player.shots();
-        if (shot == 5) {
-            this.changeBatsman();
+        if (shot.name == 'Wicket' || shot.name == "DotBall") {
+            this.addBowlingData(shot);
         }
         else {
-            this.validateRunsAndFP(shot);
-            this.battingTeam.setRuns(shot);
+            this.addBattingData(shot);
+        }
+        if (this.currentBowler.getBalls() == 6) {
+            this.changeBowler();
+            this.bowlingTeam.addOvers();
+        }
+        console.log(this.bowlingTeam.getOvers(), '.', this.currentBowler.getBalls());
+    }
+    addBowlingData(shot) {
+        let fantasyPoints = this.currentBowler.getIsCaptain() ? shot.point * 2 : this.currentBowler.getIsViceCaptain() ? shot.point * 1.5 : shot.point;
+        if (shot.name == "Wicket") {
+            if (this.currentBatsman.getRuns() == 0) {
+                this.currentBatsman.addFantasyPoints(-2);
+            }
+            this.changeBatsman();
+            this.battingTeam.addWickets();
+            this.bowlingTeam.addFantasyPoints(fantasyPoints, this.currentBowler);
+        }
+        else if (shot.name == "DotBall") {
+            this.bowlingTeam.addFantasyPoints(fantasyPoints, this.currentBowler);
         }
     }
-    validateRunsAndFP(runs) {
-        switch (runs) {
-            case 1:
-            case 2:
-            case 3:
-                this.currentBatsman.addRuns(runs);
-                this.currentBatsman.addFantasyPoints(runs);
-                break;
-            case 4:
-                this.currentBatsman.addRuns(runs);
-                this.currentBatsman.addFantasyPoints(5);
-                break;
-            case 6:
-                this.currentBatsman.addRuns(runs);
-                this.currentBatsman.addFantasyPoints(8);
-                break;
-        }
+    addBattingData(shot) {
+        let fantasyPoints = this.currentBatsman.getIsCaptain() ? shot.point * 2 : this.currentBatsman.getIsViceCaptain() ? shot.point * 1.5 : shot.point;
+        this.battingTeam.addRuns(shot.runs, this.currentBatsman);
+        this.battingTeam.addFantasyPoints(fantasyPoints, this.currentBatsman);
     }
     changeBatsman() {
-        let index = this.battingTeam.getPlayers().findIndex(player => player == this.currentBatsman);
-        this.currentBatsman = this.battingTeam.getPlayers()[++index];
+        let index = this.battingTeam.getPlayers().findIndex(player => player == this.currentBatsman) + 1;
+        this.currentBatsman = this.battingTeam.getPlayers()[index];
+    }
+    changeBowler() {
+        let index = this.bowlingTeam.getPlayers().findIndex(player => player == this.currentBowler) + 1;
+        this.currentBowler = this.bowlingTeam.getPlayers()[index];
     }
 }
 exports.Match = Match;

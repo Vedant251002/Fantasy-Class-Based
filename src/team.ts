@@ -6,9 +6,10 @@ export class Team{
     private players : Player[]
     
     private runs : number = 0
-    private wcikets : number = 0
+    private wickets : number = 0
     private over : number = 0
-
+    private fantasyPoints : number = 0
+    
     static allowedBatsman : number = 5
     static allowedBowler : number = 5
     static allowedWicketKeeper : number = 1
@@ -66,6 +67,8 @@ export class Team{
         let batsmanCount = players.filter(player => player.getRole() == "Batsman").length
         let bowlerCount = players.filter(player => player.getRole() == "Bowler").length
         let wicketKeeperCount = players.filter(player => player.getRole() == "Wicketkeeper").length
+        console.log(batsmanCount , bowlerCount , wicketKeeperCount);
+        
         if(batsmanCount != Team.allowedBatsman){
             throw new Error("Batsman Exceeded")
         } 
@@ -113,11 +116,27 @@ export class Team{
         this.players = [ ...batsmans , ...bowlers , ...wicketkeepers]
     }
 
-    setRuns(runs : number){
+    addRuns(runs : number , player : Player){
+        player.addRuns(runs)
         this.runs += runs
     }
     getRuns(){
       return  this.runs
     }
-
+    addFantasyPoints(points : number , player : Player){
+        player.addFantasyPoints(points)
+        this.fantasyPoints += points
+    }
+    getFantasy(){
+      return  this.fantasyPoints
+    }
+    addWickets(){
+        this.wickets +=1
+    }
+    addOvers(){
+        this.over +=1
+    }
+    getOvers(){
+        return this.over
+    }
 }

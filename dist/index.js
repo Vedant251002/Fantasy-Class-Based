@@ -18,14 +18,34 @@ let playersArray = playersData_1.playersData.map(player => {
 });
 let players = playersArray.slice(0, 11);
 team1.addPlayer(players);
-team1.setCaptain(players[0]);
+team1.setCaptain(players[2]);
 team1.setViceCaptain(players[1]);
 // console.log(team1.getCaptain())
 // console.log(team1.getViceCaptain())
 // team1.setViceCaptain(2)
 // console.log(match.getBattingTeam().getTeamPlayers());
-// let players2 = playersArray.slice(11,22)
-team2.addPlayer(players);
+let players2 = playersArray.slice(11, 22);
+team2.addPlayer(players2);
+team2.setCaptain(players2[5]);
+team2.setViceCaptain(players2[1]);
 // team1.removePlayer(1)
 match.startGame();
-// console.log(team1.getPlayers());
+// match.hit()
+// console.log(match.getCurrentBowler());
+// match.hit()
+// match.hit()
+// match.hit()
+// match.hit()
+// match.hit()
+// console.log(match.getCurrentBowler());
+// match.hit()
+// console.log(match.getCurrentBatsman());
+// console.log(match.getCurrentBowler());
+// console.log(match.getBattingTeam().getFantasy());
+for (let i = 1; i <= 30; i++) {
+    // console.log(i);
+    match.hit();
+}
+console.log(match.getBattingTeam());
+console.log(match.getBowlingTeam());
+// console.log(match.getBowlingTeam().getOvers(),'.',match.getCurrentBowler().getBalls());
