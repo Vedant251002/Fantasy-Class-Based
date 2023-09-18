@@ -9,7 +9,9 @@ export class Team{
     private wickets : number = 0
     private over : number = 0
     private fantasyPoints : number = 0
-    
+    private balls : number = 0
+    private isPlayed : boolean = false
+
     static allowedBatsman : number = 5
     static allowedBowler : number = 5
     static allowedWicketKeeper : number = 1
@@ -33,6 +35,12 @@ export class Team{
         return this.players
     }
 
+    setIsPlayed(){
+        this.isPlayed = true
+    }
+    getIsPlayed(){
+        return this.isPlayed
+    }
     addPlayer(players: Player[]) : void{
         this.validatePlayers(players)
         this.validatePlayerRole(players)
@@ -67,7 +75,7 @@ export class Team{
         let batsmanCount = players.filter(player => player.getRole() == "Batsman").length
         let bowlerCount = players.filter(player => player.getRole() == "Bowler").length
         let wicketKeeperCount = players.filter(player => player.getRole() == "Wicketkeeper").length
-        console.log(batsmanCount , bowlerCount , wicketKeeperCount);
+        // console.log(batsmanCount , bowlerCount , wicketKeeperCount);
         
         if(batsmanCount != Team.allowedBatsman){
             throw new Error("Batsman Exceeded")
@@ -81,12 +89,16 @@ export class Team{
     }
 
     setCaptain(player : Player) : void {
-        player.isSame()
+        if(player.getIsViceCaptain()){
+            throw new Error("This player is already selected for captain or vice captain")
+        }
         player.setIsCaptain();
     }
 
     setViceCaptain(player : Player) : void {
-        player.isSame()
+        if(player.getIsCaptain()){
+            throw new Error("This player is already selected for captain or vice captain")
+        }
         player.setIsViceCaptain()
     }
     
@@ -98,37 +110,38 @@ export class Team{
         return this.players.filter(player => player.getIsViceCaptain() == true)[0]
     }
 
-    sortPlayers(){
-        let batsmans : Player[] = []
-        let bowlers  :  Player[] = []
-        let wicketkeepers : Player[] = []
-        this.players.map( player => {
-            if( player.getRole() == "Batsman"){
-                batsmans.push(player)
-            }
-            else if( player.getRole() == "Bowler"){
-                bowlers.push(player)
-            }
-            else{
-                wicketkeepers.push(player)
-            }
-        })
-        this.players = [ ...batsmans , ...bowlers , ...wicketkeepers]
+    setRuns(){
+        this.runs =  this.players.reduce( (runs : number , player : Player) => {
+            return runs + player.getRuns()
+        },0)
     }
+    setFantasyPoints(){
+        this.fantasyPoints = this.players.reduce( (points : number , player : Player) => {
+            return points + player.getFantasyPoints()
+        },0)
+    }
+    getRuns() : number{
+        return this.runs
+    }
+    getFantasyPoints() : number{
+        return this.fantasyPoints
+    }
+    
+    getBatsman(){
 
-    addRuns(runs : number , player : Player){
-        player.addRuns(runs)
-        this.runs += runs
+        return this.players.filter( player => {
+            if( player.getIsBat() == false){
+                return player
+            }
+        })[0]
+        
     }
-    getRuns(){
-      return  this.runs
-    }
-    addFantasyPoints(points : number , player : Player){
-        player.addFantasyPoints(points)
-        this.fantasyPoints += points
-    }
-    getFantasy(){
-      return  this.fantasyPoints
+    getBowler(){
+        return this.players.filter( player => {
+            if(player.getRole() == "Bowler" && player.getIsBowl() == false){
+                return player
+            }
+        })[0]
     }
     addWickets(){
         this.wickets +=1
@@ -138,5 +151,12 @@ export class Team{
     }
     getOvers(){
         return this.over
+    }
+
+    setBalls(){
+        this.balls += 1;
+    }
+    getBalls(){
+        return this.balls
     }
 }

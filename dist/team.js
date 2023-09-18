@@ -8,6 +8,8 @@ class Team {
     wickets = 0;
     over = 0;
     fantasyPoints = 0;
+    balls = 0;
+    isPlayed = false;
     static allowedBatsman = 5;
     static allowedBowler = 5;
     static allowedWicketKeeper = 1;
@@ -26,6 +28,12 @@ class Team {
     }
     getPlayers() {
         return this.players;
+    }
+    setIsPlayed() {
+        this.isPlayed = true;
+    }
+    getIsPlayed() {
+        return this.isPlayed;
     }
     addPlayer(players) {
         this.validatePlayers(players);
@@ -55,7 +63,7 @@ class Team {
         let batsmanCount = players.filter(player => player.getRole() == "Batsman").length;
         let bowlerCount = players.filter(player => player.getRole() == "Bowler").length;
         let wicketKeeperCount = players.filter(player => player.getRole() == "Wicketkeeper").length;
-        console.log(batsmanCount, bowlerCount, wicketKeeperCount);
+        // console.log(batsmanCount , bowlerCount , wicketKeeperCount);
         if (batsmanCount != Team.allowedBatsman) {
             throw new Error("Batsman Exceeded");
         }
@@ -67,11 +75,15 @@ class Team {
         }
     }
     setCaptain(player) {
-        player.isSame();
+        if (player.getIsViceCaptain()) {
+            throw new Error("This player is already selected for captain or vice captain");
+        }
         player.setIsCaptain();
     }
     setViceCaptain(player) {
-        player.isSame();
+        if (player.getIsCaptain()) {
+            throw new Error("This player is already selected for captain or vice captain");
+        }
         player.setIsViceCaptain();
     }
     getCaptain() {
@@ -80,36 +92,35 @@ class Team {
     getViceCaptain() {
         return this.players.filter(player => player.getIsViceCaptain() == true)[0];
     }
-    sortPlayers() {
-        let batsmans = [];
-        let bowlers = [];
-        let wicketkeepers = [];
-        this.players.map(player => {
-            if (player.getRole() == "Batsman") {
-                batsmans.push(player);
-            }
-            else if (player.getRole() == "Bowler") {
-                bowlers.push(player);
-            }
-            else {
-                wicketkeepers.push(player);
-            }
-        });
-        this.players = [...batsmans, ...bowlers, ...wicketkeepers];
+    setRuns() {
+        this.runs = this.players.reduce((runs, player) => {
+            return runs + player.getRuns();
+        }, 0);
     }
-    addRuns(runs, player) {
-        player.addRuns(runs);
-        this.runs += runs;
+    setFantasyPoints() {
+        this.fantasyPoints = this.players.reduce((points, player) => {
+            return points + player.getFantasyPoints();
+        }, 0);
     }
     getRuns() {
         return this.runs;
     }
-    addFantasyPoints(points, player) {
-        player.addFantasyPoints(points);
-        this.fantasyPoints += points;
-    }
-    getFantasy() {
+    getFantasyPoints() {
         return this.fantasyPoints;
+    }
+    getBatsman() {
+        return this.players.filter(player => {
+            if (player.getIsBat() == false) {
+                return player;
+            }
+        })[0];
+    }
+    getBowler() {
+        return this.players.filter(player => {
+            if (player.getRole() == "Bowler" && player.getIsBowl() == false) {
+                return player;
+            }
+        })[0];
     }
     addWickets() {
         this.wickets += 1;
@@ -119,6 +130,12 @@ class Team {
     }
     getOvers() {
         return this.over;
+    }
+    setBalls() {
+        this.balls += 1;
+    }
+    getBalls() {
+        return this.balls;
     }
 }
 exports.Team = Team;

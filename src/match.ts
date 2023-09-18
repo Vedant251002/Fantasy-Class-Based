@@ -7,7 +7,7 @@ export class Match {
     private bowlingTeam: Team;
     private currentBatsman! : Player 
     private currentBowler! : Player
-
+    
     constructor(team1: Team, team2: Team) {
         if (team1.name == team2.name) {
             throw new Error('Both team names are same')
@@ -43,26 +43,51 @@ export class Match {
         return this.currentBowler
     }
     startGame(){
-        this.battingTeam.sortPlayers()
-        this.bowlingTeam.sortPlayers()
-        this.currentBatsman = this.battingTeam.getPlayers()[0]
-        this.currentBowler = this.bowlingTeam.getPlayers()[5]
+        // this.battingTeam.sortPlayers()
+        // this.bowlingTeam.sortPlayers()
+        this.changeBatsman()
+        this.changeBowler()
     }
 
     hit(){
-        this.currentBowler.addBalls()
+        this.bowlingTeam.setBalls()
+        // this.currentBowler.addBalls()
+        if(this.bowlingTeam.getBalls() == 30){
+            this.bowlingTeam.addOvers()
+            console.log(this.bowlingTeam.getOvers() , this.bowlingTeam.getBalls());
+            this.battingTeam.setIsPlayed()
+            if(!this.bowlingTeam.getIsPlayed()){
+                this.changeInnings()
+            }else{
+                // throw new Error('played')
+                console.log('done');
+                return
+            }
+        }
+        if(this.bowlingTeam.getBalls() % 6 == 0){
+            this.changeBowler()
+            console.log(this.bowlingTeam.getOvers() , this.bowlingTeam.getBalls());
+            
+            this.bowlingTeam.addOvers()
+        }
+        // console.log(this.bowlingTeam.getBalls() % 6);
         let shot = Player.shots()
         if(shot.name == 'Wicket' || shot.name == "DotBall"){
             this.addBowlingData(shot)
         }else{
             this.addBattingData(shot)
         }
-        if(this.currentBowler.getBalls() == 6){
-            this.changeBowler()
-            this.bowlingTeam.addOvers()
-        }
-        console.log(this.bowlingTeam.getOvers(),'.',this.currentBowler.getBalls());
         
+        this.battingTeam.setRuns()
+        this.battingTeam.setFantasyPoints()
+        this.bowlingTeam.setRuns()
+        this.bowlingTeam.setFantasyPoints()
+        
+    }
+    changeInnings() {
+        let temp = this.battingTeam;
+        this.battingTeam = this.bowlingTeam;
+        this.bowlingTeam = temp
     }
 
     addBowlingData(shot: { name: string; point: number; runs: number; }){
@@ -74,26 +99,28 @@ export class Match {
             }
             this.changeBatsman()
             this.battingTeam.addWickets()
-            this.bowlingTeam.addFantasyPoints(fantasyPoints , this.currentBowler)
+            this.currentBowler.addFantasyPoints(fantasyPoints)
         }
         else if(shot.name == "DotBall"){
-            this.bowlingTeam.addFantasyPoints(fantasyPoints , this.currentBowler)
+            this.currentBowler.addFantasyPoints(fantasyPoints)
         }
     }
 
     addBattingData(shot : { name: string; point: number; runs: number; }){
         let fantasyPoints = this.currentBatsman.getIsCaptain() ? shot.point * 2 : this.currentBatsman.getIsViceCaptain() ? shot.point * 1.5 : shot.point
-        this.battingTeam.addRuns(shot.runs , this.currentBatsman)
-        this.battingTeam.addFantasyPoints(fantasyPoints , this.currentBatsman)
+        this.currentBatsman.addBalls()
+        this.currentBatsman.addRuns(shot.runs )
+        this.currentBatsman.addFantasyPoints(fantasyPoints)
+
     }
 
     changeBatsman(){
-       let index =  this.battingTeam.getPlayers().findIndex( player => player == this.currentBatsman)+1
-        this.currentBatsman = this.battingTeam.getPlayers()[index]
+        this.currentBatsman =  this.battingTeam.getBatsman()
+        this.currentBatsman.setIsBat()
     }
 
     changeBowler(){
-        let index =  this.bowlingTeam.getPlayers().findIndex( player => player == this.currentBowler)+1
-        this.currentBowler = this.bowlingTeam.getPlayers()[index]
+        this.currentBowler = this.bowlingTeam.getBowler()
+        this.currentBowler.setIsBowl()
     }
 }   

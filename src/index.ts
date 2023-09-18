@@ -46,12 +46,18 @@ team2.setViceCaptain(players2[1])
   // console.log(match.getCurrentBatsman());
   // console.log(match.getCurrentBowler());
   // console.log(match.getBattingTeam().getFantasy());
-  for(let i = 1 ; i <= 30 ; i++){
+  for(let i = 1 ; i <= 60 ; i++){
     // console.log(i);
     
     match.hit()
 
   }
+  // for(let i = 1 ; i <= 29 ; i++){
+  //   // console.log(i);
+    
+  //   match.hit()
+
+  // }
   console.log(match.getBattingTeam());
   console.log(match.getBowlingTeam());
   

@@ -20,6 +20,8 @@ class Player {
     isCaptain = false;
     isViceCaptain = false;
     fantasyPoints = 0;
+    isBat = false;
+    isBowl = false;
     constructor(id, name, role, credit) {
         this.id = id;
         this.name = name;
@@ -50,12 +52,6 @@ class Player {
     getIsViceCaptain() {
         return this.isViceCaptain;
     }
-    isSame() {
-        if (this.isCaptain === this.isViceCaptain) {
-            return true;
-        }
-        throw new Error("This player is selected before in captain or vice captain");
-    }
     static shots() {
         let random = Math.floor(Math.random() * 7);
         return shots[random];
@@ -67,14 +63,28 @@ class Player {
         return this.runs;
     }
     addFantasyPoints(points) {
-        // this.fantasyPoints += this.isCaptain ? points * 2 : this.isViceCaptain ? points * 1.5 : points
         this.fantasyPoints += points;
+    }
+    getFantasyPoints() {
+        return this.fantasyPoints;
     }
     addBalls() {
         this.balls += 1;
     }
     getBalls() {
         return this.balls;
+    }
+    setIsBat() {
+        this.isBat = true;
+    }
+    setIsBowl() {
+        this.isBowl = true;
+    }
+    getIsBat() {
+        return this.isBat;
+    }
+    getIsBowl() {
+        return this.isBowl;
     }
 }
 exports.Player = Player;
