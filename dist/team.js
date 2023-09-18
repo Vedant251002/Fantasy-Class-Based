@@ -4,12 +4,12 @@ exports.Team = void 0;
 class Team {
     name;
     players;
-    captain = null;
-    viceCaptain = null;
-    // private batsmanCount : number = 0
-    static batsmans = 5;
-    static bowlers = 5;
-    static wicketKeepers = 1;
+    runs = 0;
+    wcikets = 0;
+    over = 0;
+    static allowedBatsman = 5;
+    static allowedBowler = 5;
+    static allowedWicketKeeper = 1;
     constructor(name) {
         this.name = name;
         this.validateName();
@@ -23,76 +23,83 @@ class Team {
     getTeam() {
         return this;
     }
-    getTeamPlayers() {
+    getPlayers() {
         return this.players;
     }
     addPlayer(players) {
-        let res = this.validatePlayers(players);
-        if (res) {
-            return console.log("Please add players that have sum of 100 credit");
-        }
-        let response = this.validatePlayerRole(players);
-        if (response) {
-            this.players = players;
-        }
+        this.validatePlayers(players);
+        this.validatePlayerRole(players);
+        this.players = players;
     }
     validatePlayers(players) {
         if (players.length != 11) {
-            return true;
+            throw new Error("Please add 11 players");
         }
         let totalCredit = 0;
         players.map(player => {
             totalCredit += player.getCredit();
         });
         if (totalCredit > 100) {
-            return true;
+            throw new Error("Please add players that have total credits below 100");
         }
-        return false;
     }
     removePlayer(id) {
-        this.players = this.players.filter(player => {
-            if (player.getId() != id) {
-                return player;
-            }
-        });
+        let playerIndex = this.players.findIndex(player => player.getId() == id);
+        if (playerIndex == -1) {
+            throw new Error('Player is not in team');
+        }
+        this.players.splice(playerIndex, 1);
     }
     validatePlayerRole(players) {
         let batsmanCount = players.filter(player => player.getRole() == "Batsman").length;
         let bowlerCount = players.filter(player => player.getRole() == "Bowler").length;
         let wicketKeeperCount = players.filter(player => player.getRole() == "Wicketkeeper").length;
-        if (batsmanCount != Team.batsmans) {
-            console.log("Batsman Exceeded");
-            return false;
+        if (batsmanCount != Team.allowedBatsman) {
+            throw new Error("Batsman Exceeded");
         }
-        if (bowlerCount != Team.bowlers) {
-            console.log("Bowler Exceeded");
-            return false;
+        if (bowlerCount != Team.allowedBowler) {
+            throw new Error("Bowler Exceeded");
         }
-        if (wicketKeeperCount != Team.wicketKeepers) {
-            console.log("WicketKeeper Exceeded");
-            return false;
-        }
-        return true;
-    }
-    checkSameCapViceCap(captain, viceCaptain) {
-        if (captain === viceCaptain) {
-            throw new Error("captain and vice captain are same");
+        if (wicketKeeperCount != Team.allowedWicketKeeper) {
+            throw new Error("WicketKeeper Exceeded");
         }
     }
-    setCaptain(id) {
-        let captain = this.players.find(player => (id == player.getId()));
-        if (captain) {
-            this.checkSameCapViceCap(captain, this.viceCaptain);
-            this.captain = captain;
-        }
-        console.log(this.captain);
+    setCaptain(player) {
+        player.isSame();
+        player.setIsCaptain();
     }
-    setViceCaptain(id) {
-        let viceCaptain = this.players.find(player => (id == player.getId()));
-        if (viceCaptain) {
-            this.checkSameCapViceCap(this.captain, viceCaptain);
-            this.viceCaptain = viceCaptain;
-        }
+    setViceCaptain(player) {
+        player.isSame();
+        player.setIsViceCaptain();
+    }
+    getCaptain() {
+        return this.players.filter(player => player.getIsCaptain() == true)[0];
+    }
+    getViceCaptain() {
+        return this.players.filter(player => player.getIsViceCaptain() == true)[0];
+    }
+    sortPlayers() {
+        let batsmans = [];
+        let bowlers = [];
+        let wicketkeepers = [];
+        this.players.map(player => {
+            if (player.getRole() == "Batsman") {
+                batsmans.push(player);
+            }
+            else if (player.getRole() == "Bowler") {
+                bowlers.push(player);
+            }
+            else {
+                wicketkeepers.push(player);
+            }
+        });
+        this.players = [...batsmans, ...bowlers, ...wicketkeepers];
+    }
+    setRuns(runs) {
+        this.runs += runs;
+    }
+    getRuns() {
+        return this.runs;
     }
 }
 exports.Team = Team;

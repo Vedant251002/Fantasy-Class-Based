@@ -18,9 +18,14 @@ let playersArray = playersData_1.playersData.map(player => {
 });
 let players = playersArray.slice(0, 11);
 team1.addPlayer(players);
-team1.setCaptain(1);
-team1.setViceCaptain(2);
-console.log(match.getBattingTeam().getTeamPlayers());
+team1.setCaptain(players[0]);
+team1.setViceCaptain(players[1]);
+// console.log(team1.getCaptain())
+// console.log(team1.getViceCaptain())
+// team1.setViceCaptain(2)
+// console.log(match.getBattingTeam().getTeamPlayers());
 // let players2 = playersArray.slice(11,22)
-// team2.addPlayer(players2)
-team1.removePlayer(1);
+team2.addPlayer(players);
+// team1.removePlayer(1)
+match.startGame();
+// console.log(team1.getPlayers());

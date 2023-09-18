@@ -6,6 +6,9 @@ class Player {
     name;
     role;
     credit;
+    runs = 0;
+    isCaptain = false;
+    isViceCaptain = false;
     constructor(id, name, role, credit) {
         this.id = id;
         this.name = name;
@@ -23,6 +26,33 @@ class Player {
     }
     getRole() {
         return this.role;
+    }
+    setIsCaptain() {
+        this.isCaptain = true;
+    }
+    setIsViceCaptain() {
+        this.isViceCaptain = true;
+    }
+    getIsCaptain() {
+        return this.isCaptain;
+    }
+    getIsViceCaptain() {
+        return this.isViceCaptain;
+    }
+    isSame() {
+        if (this.isCaptain === this.isViceCaptain) {
+            return true;
+        }
+        throw new Error("This player is selected before in captain or vice captain");
+    }
+    static shots() {
+        return Math.floor(Math.random() * 7);
+    }
+    setRuns(runs) {
+        this.runs += runs;
+    }
+    getRuns() {
+        return this.runs;
     }
 }
 exports.Player = Player;
