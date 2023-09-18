@@ -51,8 +51,27 @@ export class Match {
             this.changeBatsman()
         }
         else{
-            this.currentBatsman.setRuns(shot)
+            this.validateRunsAndFP(shot)
             this.battingTeam.setRuns(shot)
+        }
+    }
+
+    validateRunsAndFP(runs : number){
+        switch(runs){
+            case 1:
+            case 2:
+            case 3:
+                this.currentBatsman.addRuns(runs)
+                this.currentBatsman.addFantasyPoints(runs)
+                break
+            case 4:
+                this.currentBatsman.addRuns(runs)
+                this.currentBatsman.addFantasyPoints(5)
+                break
+            case 6:
+                this.currentBatsman.addRuns(runs)
+                this.currentBatsman.addFantasyPoints(8)
+                break
         }
     }
 

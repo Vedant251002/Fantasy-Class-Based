@@ -7,6 +7,7 @@ export class Player{
     private runs : number = 0
     private isCaptain : boolean = false
     private isViceCaptain : boolean = false
+    private fantasyPoints : number = 0
 
     constructor( id : number, name : string , role : string , credit : number){
         this.id = id;
@@ -50,10 +51,13 @@ export class Player{
         return Math.floor(Math.random() * 7)
     }
 
-    setRuns(runs : number){
+    addRuns(runs : number) : void{
         this.runs += runs
     }
-    getRuns(){
+    getRuns() : number{
       return  this.runs
+    }
+    addFantasyPoints(points : number ) : void{
+        this.fantasyPoints += points
     }
 }
