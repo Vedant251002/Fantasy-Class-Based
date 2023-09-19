@@ -1,126 +1,157 @@
 import { Player } from "./player";
+import { Shot } from "./shot";
 import { Team } from "./team";
-
 
 export class Match {
     private battingTeam: Team;
     private bowlingTeam: Team;
-    private currentBatsman! : Player 
-    private currentBowler! : Player
-    
+    private currentBatsman!: Player;
+    private currentBowler!: Player;
+    private winnerTeam!: Team;
+    private looserTeam!: Team;
+
     constructor(team1: Team, team2: Team) {
         if (team1.name == team2.name) {
-            throw new Error('Both team names are same')
+            throw new Error('Both team names are same');
         }
         this.battingTeam = team1;
         this.bowlingTeam = team2;
     }
-    toss() : void{
+
+    toss(): void {
         let random = Math.floor(Math.random() * 2);
         if (random == 1) {
-            let temp = this.battingTeam
+            let temp = this.battingTeam;
             this.battingTeam = this.bowlingTeam;
-            this.bowlingTeam = temp
+            this.bowlingTeam = temp;
         }
     }
-    getBattingTeam() {
-        return this.battingTeam
-    }
-    getBowlingTeam() {
-        return this.bowlingTeam
-    }
-    getTossWinnerTeam() {
-        return this.battingTeam
-    }
-    getTossLoserTeam() {
-        return this.bowlingTeam
+
+    getBattingTeam(): Team {
+        return this.battingTeam;
     }
 
-    getCurrentBatsman(){
-        return this.currentBatsman
-    }
-    getCurrentBowler(){
-        return this.currentBowler
-    }
-    startGame(){
-        // this.battingTeam.sortPlayers()
-        // this.bowlingTeam.sortPlayers()
-        this.changeBatsman()
-        this.changeBowler()
+    getBowlingTeam(): Team {
+        return this.bowlingTeam;
     }
 
-    hit(){
-        this.bowlingTeam.setBalls()
-        // this.currentBowler.addBalls()
-        if(this.bowlingTeam.getBalls() == 30){
-            this.bowlingTeam.addOvers()
-            console.log(this.bowlingTeam.getOvers() , this.bowlingTeam.getBalls());
-            this.battingTeam.setIsPlayed()
-            if(!this.bowlingTeam.getIsPlayed()){
-                this.changeInnings()
-            }else{
-                // throw new Error('played')
-                console.log('done');
-                return
+    getTossWinnerTeam(): Team {
+        return this.battingTeam;
+    }
+
+    getTossLoserTeam(): Team {
+        return this.bowlingTeam;
+    }
+
+    getCurrentBatsman(): Player {
+        return this.currentBatsman;
+    }
+
+    getCurrentBowler(): Player {
+        return this.currentBowler;
+    }
+
+    startGame(): void {
+        this.changeBatsman();
+        this.changeBowler();
+    }
+
+    hit(): void {
+        this.currentBatsman.addBalls();
+        this.bowlingTeam.addBalls();
+        this.updateOver();
+        let shot = Player.shots();
+        this.addBowlingData(shot);
+        this.addBattingData(shot);
+    }
+
+    updateOver(): void {
+        if (this.bowlingTeam.getBalls() == 30) {
+            this.bowlingTeam.addOvers();
+            this.battingTeam.setIsPlayed();
+            return this.changeInnings();
+        }
+        if (this.bowlingTeam.getBalls() % 6 == 0) {
+            this.changeBowler();
+            this.bowlingTeam.addOvers();
+        }
+    }
+
+    changeInnings(): void {
+        if (!this.bowlingTeam.getIsPlayed()) {
+            let temp = this.battingTeam;
+            this.battingTeam = this.bowlingTeam;
+            this.bowlingTeam = temp;
+        } else {
+            this.showWinner();
+        }
+    }
+
+    addBowlingData(shot: Shot): void {
+        let fantasyPoints = this.countFantsayPoints(this.currentBowler, shot);
+
+        if (shot.getName() == "Wicket") {
+            if (this.currentBatsman.getRuns() == 0) {
+                this.currentBatsman.addFantasyPoints(-2);
             }
+            this.changeBatsman();
+            this.battingTeam.addWickets();
+            this.currentBowler.addWickets();
+            this.currentBowler.addFantasyPoints(fantasyPoints);
+        } else if (shot.getName() == "DotBall") {
+            this.currentBowler.addFantasyPoints(fantasyPoints);
         }
-        if(this.bowlingTeam.getBalls() % 6 == 0){
-            this.changeBowler()
-            console.log(this.bowlingTeam.getOvers() , this.bowlingTeam.getBalls());
-            
-            this.bowlingTeam.addOvers()
-        }
-        // console.log(this.bowlingTeam.getBalls() % 6);
-        let shot = Player.shots()
-        if(shot.name == 'Wicket' || shot.name == "DotBall"){
-            this.addBowlingData(shot)
-        }else{
-            this.addBattingData(shot)
-        }
+    }
+
+    countFantsayPoints(player: Player, shot: Shot): number {
+        return player.getIsCaptain() ? shot.getPoint() * 2 : player.getIsViceCaptain() ? shot.getPoint() * 1.5 : shot.getPoint();
+    }
+
+    addBattingData(shot: Shot): void {
         
-        this.battingTeam.setRuns()
-        this.battingTeam.setFantasyPoints()
-        this.bowlingTeam.setRuns()
-        this.bowlingTeam.setFantasyPoints()
-        
-    }
-    changeInnings() {
-        let temp = this.battingTeam;
-        this.battingTeam = this.bowlingTeam;
-        this.bowlingTeam = temp
-    }
-
-    addBowlingData(shot: { name: string; point: number; runs: number; }){
-        let fantasyPoints = this.currentBowler.getIsCaptain() ? shot.point * 2 : this.currentBowler.getIsViceCaptain() ? shot.point * 1.5 : shot.point
-
-        if(shot.name == "Wicket"){
-            if(this.currentBatsman.getRuns() == 0){
-                this.currentBatsman.addFantasyPoints(-2)
-            }
-            this.changeBatsman()
-            this.battingTeam.addWickets()
-            this.currentBowler.addFantasyPoints(fantasyPoints)
-        }
-        else if(shot.name == "DotBall"){
-            this.currentBowler.addFantasyPoints(fantasyPoints)
+        this.currentBatsman.addBalls();
+        if (shot.getName() != "Wicket" && shot.getName() != "DotBall") {
+            let fantasyPoints = this.countFantsayPoints(this.currentBatsman, shot);
+            this.currentBatsman.addRuns(shot.getRuns());
+            this.currentBatsman.addFantasyPoints(fantasyPoints);
         }
     }
 
-    addBattingData(shot : { name: string; point: number; runs: number; }){
-        let fantasyPoints = this.currentBatsman.getIsCaptain() ? shot.point * 2 : this.currentBatsman.getIsViceCaptain() ? shot.point * 1.5 : shot.point
-        this.currentBatsman.addBalls()
-        this.currentBatsman.addRuns(shot.runs )
-        this.currentBatsman.addFantasyPoints(fantasyPoints)
-
+    changeBatsman(): void {
+        this.currentBatsman = this.battingTeam.getBatsman();
+        this.currentBatsman.setIsBat();
     }
 
-    changeBatsman(){
-        this.currentBatsman =  this.battingTeam.getBatsman()
-        this.currentBatsman.setIsBat()
+    changeBowler(): void {
+        this.currentBowler = this.bowlingTeam.getBowler();
+        this.currentBowler.setIsBowl();
     }
 
-    changeBowler(){
-        this.currentBowler = this.bowlingTeam.getBowler()
-        this.currentBowler.setIsBowl()
+    showWinner(): void {
+        this.battingTeam.setRuns();
+        this.battingTeam.setFantasyPoints();
+        this.bowlingTeam.setRuns();
+        this.bowlingTeam.setFantasyPoints();
+
+        let winner = this.battingTeam.getFantasyPoints() > this.bowlingTeam.getFantasyPoints() ? this.battingTeam : this.bowlingTeam;
+        console.log(winner.getName(), 'has won the match');
+        this.winnerTeam = winner;
+        this.looserTeam = winner == this.battingTeam ? this.bowlingTeam : this.battingTeam;
+        this.score(this.winnerTeam);
+        console.log('                                                                     ');
+        console.log('====================================================================');
+        console.log('                                                                     ');
+
+        this.score(this.looserTeam);
     }
-}   
+
+    score(team: Team): void {
+        let teamScore = `${team.getName()}  -- ${team.getRuns()}/${team.getWickets()}  -- Fantasy points - ${team.getFantasyPoints()}`;
+        console.log(teamScore);
+        team.getPlayers().map((player, index) => {
+            console.log('------------------------------------------------------------------');
+            console.log
+                (`${index + 1}  ${player.getName()} -- runs - ${player.getRuns()}  -- wickets - ${player.getWicket()} -- fantasy points - ${player.getFantasyPoints()}`);
+        });
+    }
+}

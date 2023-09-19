@@ -1,4 +1,4 @@
-import PlayerMapper from "./mapper";
+import PlayerMapper from "./playerMapper";
 import {Match} from "./match";
 import {Team} from "./team";
 import { playersData } from "./playersData";
@@ -58,8 +58,8 @@ team2.setViceCaptain(players2[1])
   //   match.hit()
 
   // }
-  console.log(match.getBattingTeam());
-  console.log(match.getBowlingTeam());
+  // console.log(match.getBattingTeam());
+  // console.log(match.getBowlingTeam());
   
   // console.log(match.getBowlingTeam().getOvers(),'.',match.getCurrentBowler().getBalls());
   

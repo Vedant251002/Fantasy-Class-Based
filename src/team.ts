@@ -21,6 +21,10 @@ export class Team{
         this.players = [];
     }
     
+    getName() : string {
+        return this.name
+    }
+
     validateName() : void {
         if(this.name == "" || this.name == " "){
             throw new Error("should not be blank")
@@ -35,10 +39,10 @@ export class Team{
         return this.players
     }
 
-    setIsPlayed(){
+    setIsPlayed() : void {
         this.isPlayed = true
     }
-    getIsPlayed(){
+    getIsPlayed() : boolean {
         return this.isPlayed
     }
     addPlayer(players: Player[]) : void{
@@ -75,8 +79,6 @@ export class Team{
         let batsmanCount = players.filter(player => player.getRole() == "Batsman").length
         let bowlerCount = players.filter(player => player.getRole() == "Bowler").length
         let wicketKeeperCount = players.filter(player => player.getRole() == "Wicketkeeper").length
-        // console.log(batsmanCount , bowlerCount , wicketKeeperCount);
-        
         if(batsmanCount != Team.allowedBatsman){
             throw new Error("Batsman Exceeded")
         } 
@@ -110,12 +112,12 @@ export class Team{
         return this.players.filter(player => player.getIsViceCaptain() == true)[0]
     }
 
-    setRuns(){
+    setRuns() : void {
         this.runs =  this.players.reduce( (runs : number , player : Player) => {
             return runs + player.getRuns()
         },0)
     }
-    setFantasyPoints(){
+    setFantasyPoints() : void {
         this.fantasyPoints = this.players.reduce( (points : number , player : Player) => {
             return points + player.getFantasyPoints()
         },0)
@@ -127,7 +129,7 @@ export class Team{
         return this.fantasyPoints
     }
     
-    getBatsman(){
+    getBatsman() : Player{
 
         return this.players.filter( player => {
             if( player.getIsBat() == false){
@@ -136,27 +138,30 @@ export class Team{
         })[0]
         
     }
-    getBowler(){
+    getBowler() : Player{
         return this.players.filter( player => {
             if(player.getRole() == "Bowler" && player.getIsBowl() == false){
                 return player
             }
         })[0]
     }
-    addWickets(){
+    addWickets() : void {
         this.wickets +=1
     }
-    addOvers(){
+    getWickets() : number {
+        return this.wickets
+    }
+    addOvers() : void {
         this.over +=1
     }
-    getOvers(){
+    getOvers() : number {
         return this.over
     }
 
-    setBalls(){
+    addBalls() : void {
         this.balls += 1;
     }
-    getBalls(){
+    getBalls() : number {
         return this.balls
     }
 }

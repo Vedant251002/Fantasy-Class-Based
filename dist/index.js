@@ -3,7 +3,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-const mapper_1 = __importDefault(require("./mapper"));
+const playerMapper_1 = __importDefault(require("./playerMapper"));
 const match_1 = require("./match");
 const team_1 = require("./team");
 const playersData_1 = require("./playersData");
@@ -14,7 +14,7 @@ match.toss();
 team1 = match.getBattingTeam();
 team2 = match.getBowlingTeam();
 let playersArray = playersData_1.playersData.map(player => {
-    return mapper_1.default.toDomain(player);
+    return playerMapper_1.default.toDomain(player);
 });
 let players = playersArray.slice(0, 11);
 team1.addPlayer(players);
@@ -50,6 +50,6 @@ for (let i = 1; i <= 60; i++) {
 //   // console.log(i);
 //   match.hit()
 // }
-console.log(match.getBattingTeam());
-console.log(match.getBowlingTeam());
+// console.log(match.getBattingTeam());
+// console.log(match.getBowlingTeam());
 // console.log(match.getBowlingTeam().getOvers(),'.',match.getCurrentBowler().getBalls());

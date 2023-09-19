@@ -18,6 +18,9 @@ class Team {
         this.validateName();
         this.players = [];
     }
+    getName() {
+        return this.name;
+    }
     validateName() {
         if (this.name == "" || this.name == " ") {
             throw new Error("should not be blank");
@@ -63,7 +66,6 @@ class Team {
         let batsmanCount = players.filter(player => player.getRole() == "Batsman").length;
         let bowlerCount = players.filter(player => player.getRole() == "Bowler").length;
         let wicketKeeperCount = players.filter(player => player.getRole() == "Wicketkeeper").length;
-        // console.log(batsmanCount , bowlerCount , wicketKeeperCount);
         if (batsmanCount != Team.allowedBatsman) {
             throw new Error("Batsman Exceeded");
         }
@@ -125,13 +127,16 @@ class Team {
     addWickets() {
         this.wickets += 1;
     }
+    getWickets() {
+        return this.wickets;
+    }
     addOvers() {
         this.over += 1;
     }
     getOvers() {
         return this.over;
     }
-    setBalls() {
+    addBalls() {
         this.balls += 1;
     }
     getBalls() {

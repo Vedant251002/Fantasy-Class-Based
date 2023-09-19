@@ -1,6 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.Player = void 0;
+const shotsMapper_1 = require("./shotsMapper");
 const shots = [
     { name: "Single", point: 1, runs: 1 },
     { name: "Double", point: 2, runs: 2 },
@@ -22,11 +23,21 @@ class Player {
     fantasyPoints = 0;
     isBat = false;
     isBowl = false;
+    wicket = 0;
     constructor(id, name, role, credit) {
         this.id = id;
         this.name = name;
         this.role = role;
         this.credit = credit;
+    }
+    addWickets() {
+        this.wicket += 1;
+    }
+    getWicket() {
+        return this.wicket;
+    }
+    getName() {
+        return this.name;
     }
     getPlayer() {
         return this;
@@ -54,7 +65,7 @@ class Player {
     }
     static shots() {
         let random = Math.floor(Math.random() * 7);
-        return shots[random];
+        return shotsMapper_1.ShotMapper.toDomain(shots[random]);
     }
     addRuns(runs) {
         this.runs += runs;

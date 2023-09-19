@@ -1,3 +1,5 @@
+import { Shot } from "./shot";
+import { ShotMapper } from "./shotsMapper";
 
 const shots = [
     { name: "Single", point: 1, runs: 1 },
@@ -21,6 +23,7 @@ export class Player{
     private fantasyPoints : number = 0
     private isBat : boolean = false
     private isBowl : boolean = false
+    private wicket :number = 0
 
     constructor( id : number, name : string , role : string , credit : number){
         this.id = id;
@@ -29,6 +32,16 @@ export class Player{
         this.credit = credit;        
     }
 
+    addWickets() : void{
+        this.wicket += 1
+    }
+    getWicket() : number{
+        return this.wicket
+    }
+
+    getName() : string {
+        return this.name
+    }
     getPlayer() : Player {
         return this
     }
@@ -54,9 +67,9 @@ export class Player{
         return this.isViceCaptain
     }
 
-    static shots(){
+    static shots() : Shot{
         let random =  Math.floor(Math.random() * 7)
-        return shots[random]
+        return ShotMapper.toDomain(shots[random])
     }
 
     addRuns(runs : number) : void{
@@ -68,25 +81,25 @@ export class Player{
     addFantasyPoints(points : number ) : void{
         this.fantasyPoints += points
     }
-    getFantasyPoints(){
+    getFantasyPoints() : number{
         return this.fantasyPoints
     }
-    addBalls(){
+    addBalls() : void {
         this.balls += 1
     }
-    getBalls(){
+    getBalls() : number {
         return this.balls
     }
-    setIsBat(){
+    setIsBat() : void {
         this.isBat = true
     }
-    setIsBowl(){
+    setIsBowl() : void {
         this.isBowl = true
     }
-    getIsBat(){
+    getIsBat() : boolean {
         return this.isBat
     }
-    getIsBowl(){
+    getIsBowl() : boolean {
         return this.isBowl
     }
 }
