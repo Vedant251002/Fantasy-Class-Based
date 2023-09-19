@@ -9,7 +9,6 @@ class Team {
     over = 0;
     fantasyPoints = 0;
     balls = 0;
-    isPlayed = false;
     static allowedBatsman = 5;
     static allowedBowler = 5;
     static allowedWicketKeeper = 1;
@@ -31,12 +30,6 @@ class Team {
     }
     getPlayers() {
         return this.players;
-    }
-    setIsPlayed() {
-        this.isPlayed = true;
-    }
-    getIsPlayed() {
-        return this.isPlayed;
     }
     addPlayer(players) {
         this.validatePlayers(players);

@@ -7,8 +7,6 @@ export class Match {
     private bowlingTeam: Team;
     private currentBatsman!: Player;
     private currentBowler!: Player;
-    private winnerTeam!: Team;
-    private looserTeam!: Team;
 
     constructor(team1: Team, team2: Team) {
         if (team1.name == team2.name) {
@@ -63,12 +61,16 @@ export class Match {
         let shot = Player.shots();
         this.addBowlingData(shot);
         this.addBattingData(shot);
+        this.battingTeam.setRuns();
+        this.battingTeam.setFantasyPoints();
+        this.bowlingTeam.setRuns();
+        this.bowlingTeam.setFantasyPoints();
     }
 
     updateOver(): void {
         if (this.bowlingTeam.getBalls() == 30) {
             this.bowlingTeam.addOvers();
-            this.battingTeam.setIsPlayed();
+            // this.battingTeam.setIsPlayed();
             return this.changeInnings();
         }
         if (this.bowlingTeam.getBalls() % 6 == 0) {
@@ -78,12 +80,12 @@ export class Match {
     }
 
     changeInnings(): void {
-        if (!this.bowlingTeam.getIsPlayed()) {
+        if (this.battingTeam.getOvers() == 5) {
+            this.getScoreBoard();
+        } else {
             let temp = this.battingTeam;
             this.battingTeam = this.bowlingTeam;
             this.bowlingTeam = temp;
-        } else {
-            this.showWinner();
         }
     }
 
@@ -108,7 +110,6 @@ export class Match {
     }
 
     addBattingData(shot: Shot): void {
-        
         this.currentBatsman.addBalls();
         if (shot.getName() != "Wicket" && shot.getName() != "DotBall") {
             let fantasyPoints = this.countFantsayPoints(this.currentBatsman, shot);
@@ -127,25 +128,16 @@ export class Match {
         this.currentBowler.setIsBowl();
     }
 
-    showWinner(): void {
-        this.battingTeam.setRuns();
-        this.battingTeam.setFantasyPoints();
-        this.bowlingTeam.setRuns();
-        this.bowlingTeam.setFantasyPoints();
-
-        let winner = this.battingTeam.getFantasyPoints() > this.bowlingTeam.getFantasyPoints() ? this.battingTeam : this.bowlingTeam;
-        console.log(winner.getName(), 'has won the match');
-        this.winnerTeam = winner;
-        this.looserTeam = winner == this.battingTeam ? this.bowlingTeam : this.battingTeam;
-        this.score(this.winnerTeam);
+    getScoreBoard(): void {
+        console.log(this.getWinner().getName(), 'has won the match');
+        this.playerScore(this.battingTeam);
         console.log('                                                                     ');
         console.log('====================================================================');
         console.log('                                                                     ');
-
-        this.score(this.looserTeam);
+        this.playerScore(this.bowlingTeam);
     }
 
-    score(team: Team): void {
+    playerScore(team: Team): void {
         let teamScore = `${team.getName()}  -- ${team.getRuns()}/${team.getWickets()}  -- Fantasy points - ${team.getFantasyPoints()}`;
         console.log(teamScore);
         team.getPlayers().map((player, index) => {
@@ -153,5 +145,10 @@ export class Match {
             console.log
                 (`${index + 1}  ${player.getName()} -- runs - ${player.getRuns()}  -- wickets - ${player.getWicket()} -- fantasy points - ${player.getFantasyPoints()}`);
         });
+    }
+
+    getWinner() {
+        return this.battingTeam.getFantasyPoints() > this.bowlingTeam.getFantasyPoints() ? this.battingTeam : this.bowlingTeam;
+
     }
 }
