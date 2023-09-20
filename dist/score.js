@@ -5,9 +5,8 @@ class Score {
     team;
     constructor(team) {
         this.team = team;
-        this.playerScore();
     }
-    playerScore() {
+    getScore() {
         let teamScore = `${this.team.getName()}  -- ${this.team.getRuns()}/${this.team.getWickets()}  -- Fantasy points - ${this.team.getFantasyPoints()}`;
         console.log(teamScore);
         console.log();

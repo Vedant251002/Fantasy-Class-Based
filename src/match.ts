@@ -1,7 +1,5 @@
 import { Game } from "./game";
 import { Player } from "./player";
-import { Score } from "./score";
-import { Shot } from "./shot";
 import { Team } from "./team";
 
 export class Match {
@@ -9,7 +7,6 @@ export class Match {
     private bowlingTeam: Team;
     private currentBatsman!: Player;
     private currentBowler!: Player;
-    private playGame!: Game;
 
     constructor(team1: Team, team2: Team) {
         if (team1.name == team2.name) {
@@ -57,15 +54,6 @@ export class Match {
             game.hit();
         }
     }
-    // autoPlay(){
-    //     for(let i = 1 ; i <= 30 ; i++){
-    //         this.playGame.hit()
-    //     }
-    // }
-    // changeInnings(): void {
-    //     this.playGame = new Game(this.bowlingTeam,this.battingTeam)
-    // }
-
     getWinner() {
         let winner: Team = this.battingTeam.getFantasyPoints() > this.bowlingTeam.getFantasyPoints() ? this.battingTeam : this.bowlingTeam;
         return console.log(winner.getName(), 'has won the match');

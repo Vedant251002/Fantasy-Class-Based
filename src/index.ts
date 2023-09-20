@@ -36,5 +36,7 @@ let secondInning = new Game(team2, team1);
 match.startGame(secondInning);
 
 console.log();
-new Score(team1);
-new Score(team2);
+let team1Score = new Score(team1);
+team1Score.getScore()
+let team2Score = new Score(team2);
+team2Score.getScore()

@@ -6,7 +6,6 @@ class Match {
     bowlingTeam;
     currentBatsman;
     currentBowler;
-    playGame;
     constructor(team1, team2) {
         if (team1.name == team2.name) {
             throw new Error('Both team names are same');
@@ -45,14 +44,6 @@ class Match {
             game.hit();
         }
     }
-    // autoPlay(){
-    //     for(let i = 1 ; i <= 30 ; i++){
-    //         this.playGame.hit()
-    //     }
-    // }
-    // changeInnings(): void {
-    //     this.playGame = new Game(this.bowlingTeam,this.battingTeam)
-    // }
     getWinner() {
         let winner = this.battingTeam.getFantasyPoints() > this.bowlingTeam.getFantasyPoints() ? this.battingTeam : this.bowlingTeam;
         return console.log(winner.getName(), 'has won the match');
