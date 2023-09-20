@@ -7,6 +7,8 @@ const playerMapper_1 = __importDefault(require("./playerMapper"));
 const match_1 = require("./match");
 const team_1 = require("./team");
 const playersData_1 = require("./playersData");
+const score_1 = require("./score");
+const game_1 = require("./game");
 let team1 = new team_1.Team('RCB');
 let team2 = new team_1.Team('CSK');
 let match = new match_1.Match(team1, team2);
@@ -24,7 +26,10 @@ let players2 = playersArray.slice(11, 22);
 team2.addPlayer(players2);
 team2.setCaptain(players2[5]);
 team2.setViceCaptain(players2[1]);
-match.startGame();
-for (let i = 1; i <= 60; i++) {
-    match.hit();
-}
+let firstInning = new game_1.Game(team1, team2);
+match.startGame(firstInning);
+let secondInning = new game_1.Game(team2, team1);
+match.startGame(secondInning);
+console.log();
+new score_1.Score(team1);
+new score_1.Score(team2);
