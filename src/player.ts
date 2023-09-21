@@ -1,3 +1,4 @@
+import { Batsman } from "./batsman";
 import { Shot, shots } from "./shot";
 import { ShotMapper } from "./shotsMapper";
 
@@ -6,21 +7,21 @@ import { ShotMapper } from "./shotsMapper";
 export class Player {
     private id: number;
     private name: string;
-    private role: string;
+    // private role: string;
     private credit: number;
-    private runs: number = 0;
-    private balls: number = 0;
+    // private runs: number = 0;
+    // private balls: number = 0;
     private isCaptain: boolean = false;
     private isViceCaptain: boolean = false;
     private fantasyPoints: number = 0;
-    private isBat: boolean = false;
+    // private isBat: boolean = false;
     private isBowl: boolean = false;
     private wicket: number = 0;
 
-    constructor(id: number, name: string, role: string, credit: number) {
+    constructor(id: number, name: string, role: string , credit: number) {
         this.id = id;
         this.name = name;
-        this.role = role;
+        // this.role = role;
         this.credit = credit;
     }
 
@@ -43,9 +44,9 @@ export class Player {
     getCredit(): number {
         return this.credit;
     }
-    getRole(): string {
-        return this.role;
-    }
+    // getRole(): string {
+    //     return this.role;
+    // }
     setIsCaptain(): void {
         this.isCaptain = true;
     }
@@ -64,33 +65,33 @@ export class Player {
         return ShotMapper.toDomain(shots[random]);
     }
 
-    addRuns(runs: number): void {
-        this.runs += runs;
-    }
-    getRuns(): number {
-        return this.runs;
-    }
+    // addRuns(runs: number): void {
+    //     this.runs += runs;
+    // }
+    // getRuns(): number {
+    //     return this.runs;
+    // }
     addFantasyPoints(points: number): void {
         this.fantasyPoints += points;
     }
     getFantasyPoints(): number {
         return this.fantasyPoints;
     }
-    addBalls(): void {
-        this.balls += 1;
-    }
-    getBalls(): number {
-        return this.balls;
-    }
-    setIsBat(): void {
-        this.isBat = true;
-    }
+    // addBalls(): void {
+    //     this.balls += 1;
+    // }
+    // getBalls(): number {
+    //     return this.balls;
+    // }
+    // setIsBat(): void {
+    //     this.isBat = true;
+    // }
     setIsBowl(): void {
         this.isBowl = true;
     }
-    getIsBat(): boolean {
-        return this.isBat;
-    }
+    // getIsBat(): boolean {
+    //     return this.isBat;
+    // }
     getIsBowl(): boolean {
         return this.isBowl;
     }

@@ -6,20 +6,20 @@ const shotsMapper_1 = require("./shotsMapper");
 class Player {
     id;
     name;
-    role;
+    // private role: string;
     credit;
-    runs = 0;
-    balls = 0;
+    // private runs: number = 0;
+    // private balls: number = 0;
     isCaptain = false;
     isViceCaptain = false;
     fantasyPoints = 0;
-    isBat = false;
+    // private isBat: boolean = false;
     isBowl = false;
     wicket = 0;
     constructor(id, name, role, credit) {
         this.id = id;
         this.name = name;
-        this.role = role;
+        // this.role = role;
         this.credit = credit;
     }
     addWickets() {
@@ -40,9 +40,9 @@ class Player {
     getCredit() {
         return this.credit;
     }
-    getRole() {
-        return this.role;
-    }
+    // getRole(): string {
+    //     return this.role;
+    // }
     setIsCaptain() {
         this.isCaptain = true;
     }
@@ -59,33 +59,33 @@ class Player {
         let random = Math.floor(Math.random() * 7);
         return shotsMapper_1.ShotMapper.toDomain(shot_1.shots[random]);
     }
-    addRuns(runs) {
-        this.runs += runs;
-    }
-    getRuns() {
-        return this.runs;
-    }
+    // addRuns(runs: number): void {
+    //     this.runs += runs;
+    // }
+    // getRuns(): number {
+    //     return this.runs;
+    // }
     addFantasyPoints(points) {
         this.fantasyPoints += points;
     }
     getFantasyPoints() {
         return this.fantasyPoints;
     }
-    addBalls() {
-        this.balls += 1;
-    }
-    getBalls() {
-        return this.balls;
-    }
-    setIsBat() {
-        this.isBat = true;
-    }
+    // addBalls(): void {
+    //     this.balls += 1;
+    // }
+    // getBalls(): number {
+    //     return this.balls;
+    // }
+    // setIsBat(): void {
+    //     this.isBat = true;
+    // }
     setIsBowl() {
         this.isBowl = true;
     }
-    getIsBat() {
-        return this.isBat;
-    }
+    // getIsBat(): boolean {
+    //     return this.isBat;
+    // }
     getIsBowl() {
         return this.isBowl;
     }
