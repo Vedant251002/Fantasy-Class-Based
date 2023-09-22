@@ -1,12 +1,12 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.Match = void 0;
+const game_1 = require("./game");
 class Match {
     battingTeam;
     bowlingTeam;
-    // private currentBatsman!: Player;
-    // private currentBowler!: Player;
-    overs = 0;
+    innings;
+    overs;
     constructor(team1, team2) {
         if (team1.name == team2.name) {
             throw new Error('Both team names are same');
@@ -25,9 +25,6 @@ class Match {
     setOvers(over) {
         this.overs = over;
     }
-    getOvers() {
-        return this.overs;
-    }
     getBattingTeam() {
         return this.battingTeam;
     }
@@ -40,16 +37,20 @@ class Match {
     getTossLoserTeam() {
         return this.bowlingTeam;
     }
-    // getCurrentBatsman(): Player {
-    //     return this.currentBatsman;
-    // }
-    // getCurrentBowler(): Player {
-    //     return this.currentBowler;
-    // }
-    startGame(game) {
-        for (let i = 1; i <= 30; i++) {
-            game.hit();
+    autoPlay() {
+        for (let i = 1; i <= this.overs * 6; i++) {
+            this.innings.hit();
         }
+    }
+    startGame() {
+        this.innings = new game_1.Game(this.battingTeam, this.bowlingTeam);
+        this.innings.setOvers(this.overs);
+        this.autoPlay();
+    }
+    changeInnings() {
+        this.innings = new game_1.Game(this.bowlingTeam, this.battingTeam);
+        this.innings.setOvers(this.overs);
+        this.autoPlay();
     }
     getWinner() {
         let winner = this.battingTeam.getFantasyPoints() > this.bowlingTeam.getFantasyPoints() ? this.battingTeam : this.bowlingTeam;

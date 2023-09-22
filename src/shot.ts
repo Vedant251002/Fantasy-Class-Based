@@ -1,6 +1,6 @@
 import { ShotMapper } from "./shotsMapper";
 
-export const shots = [
+export const shotsArray = [
     { name: "Single", point: 1, runs: 1 },
     { name: "Double", point: 2, runs: 2 },
     { name: "Triple", point: 3, runs: 3 },
@@ -22,7 +22,7 @@ export class Shot {
 
     static shots(): Shot {
         let random = Math.floor(Math.random() * 7);
-        return ShotMapper.toDomain(shots[random]);
+        return ShotMapper.toDomain(shotsArray[random]);
     }
     getName(): string {
         return this.name;

@@ -1,3 +1,4 @@
+import { Cricketer } from "./cricketer";
 import { Player } from "./player";
 import { Shot } from "./shot";
 import { Team } from "./team";
@@ -5,9 +6,10 @@ import { Team } from "./team";
 export class Game {
     private battingTeam!: Team;
     private bowlingTeam!: Team;
-    private currentBatsman!: Player;
-    private currentBowler!: Player;
-    
+    private currentBatsman!: Cricketer;
+    private currentBowler!: Cricketer;
+    private overs : number = 0;
+
     constructor(battingTeam: Team, bowlingTeam: Team) {
         this.battingTeam = battingTeam;
         this.bowlingTeam = bowlingTeam;
@@ -16,25 +18,29 @@ export class Game {
     }
 
     hit(): void {
+        if (this.battingTeam.getWickets() == 10) {
+            return 
+        }
         this.currentBatsman.addBalls();
         this.bowlingTeam.addBalls();
         this.updateOver();
         let shot = Shot.shots();
         this.addBowlingData(shot);
         this.addBattingData(shot);
-        this.battingTeam.setRuns();
-        this.battingTeam.setFantasyPoints();
-        this.bowlingTeam.setRuns();
-        this.bowlingTeam.setFantasyPoints();
     }
 
     updateOver(): void {
         if (this.bowlingTeam.getBalls() % 6 == 0) {
             this.bowlingTeam.addOvers();
-            if (this.bowlingTeam.getOvers() == 5) {
+            if (this.bowlingTeam.getOvers() == this.overs) {
                 return;
             }
-            this.changeBowler();
+            if(this.currentBowler.getOver() == (this.overs / 5)){                
+                this.changeBowler();
+            }else{
+
+                this.currentBowler.addOver()
+            }
         }
     }
     addBowlingData(shot: Shot): void {
@@ -53,7 +59,7 @@ export class Game {
         }
     }
 
-    countFantsayPoints(player: Player, shot: Shot): number {
+    countFantsayPoints(player: Cricketer, shot: Shot): number {
         return player.getIsCaptain() ? shot.getPoint() * 2 : player.getIsViceCaptain() ? shot.getPoint() * 1.5 : shot.getPoint();
     }
 
@@ -72,7 +78,6 @@ export class Game {
 
     changeBowler(): void {
         this.currentBowler = this.bowlingTeam.getBowler();
-        this.currentBowler.setIsBowl();
     }
 
     getCurrentBatsman(): Player {
@@ -82,5 +87,10 @@ export class Game {
     getCurrentBowler(): Player {
         return this.currentBowler;
     }
-
+    setOvers(over : number){
+        this.overs = over
+    }
+    getOvers(): number{
+        return this.overs
+    }
 }

@@ -4,10 +4,8 @@ exports.Team = void 0;
 class Team {
     name;
     players;
-    runs = 0;
     wickets = 0;
     over = 0;
-    fantasyPoints = 0;
     balls = 0;
     static allowedBatsman = 5;
     static allowedBowler = 5;
@@ -87,21 +85,15 @@ class Team {
     getViceCaptain() {
         return this.players.filter(player => player.getIsViceCaptain() == true)[0];
     }
-    setRuns() {
-        this.runs = this.players.reduce((runs, player) => {
+    getRuns() {
+        return this.players.reduce((runs, player) => {
             return runs + player.getRuns();
         }, 0);
     }
-    setFantasyPoints() {
-        this.fantasyPoints = this.players.reduce((points, player) => {
+    getFantasyPoints() {
+        return this.players.reduce((points, player) => {
             return points + player.getFantasyPoints();
         }, 0);
-    }
-    getRuns() {
-        return this.runs;
-    }
-    getFantasyPoints() {
-        return this.fantasyPoints;
     }
     getBatsman() {
         return this.players.filter(player => {
@@ -112,7 +104,7 @@ class Team {
     }
     getBowler() {
         return this.players.filter(player => {
-            if (player.getRole() == "Bowler" && player.getIsBowl() == false) {
+            if (player.getRole() == "Bowler" && player.getOver() == 0) {
                 return player;
             }
         })[0];

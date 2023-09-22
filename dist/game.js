@@ -7,6 +7,7 @@ class Game {
     bowlingTeam;
     currentBatsman;
     currentBowler;
+    overs = 0;
     constructor(battingTeam, bowlingTeam) {
         this.battingTeam = battingTeam;
         this.bowlingTeam = bowlingTeam;
@@ -14,24 +15,28 @@ class Game {
         this.changeBowler();
     }
     hit() {
+        if (this.battingTeam.getWickets() == 10) {
+            return;
+        }
         this.currentBatsman.addBalls();
         this.bowlingTeam.addBalls();
         this.updateOver();
         let shot = shot_1.Shot.shots();
         this.addBowlingData(shot);
         this.addBattingData(shot);
-        this.battingTeam.setRuns();
-        this.battingTeam.setFantasyPoints();
-        this.bowlingTeam.setRuns();
-        this.bowlingTeam.setFantasyPoints();
     }
     updateOver() {
         if (this.bowlingTeam.getBalls() % 6 == 0) {
             this.bowlingTeam.addOvers();
-            if (this.bowlingTeam.getOvers() == 5) {
+            if (this.bowlingTeam.getOvers() == this.overs) {
                 return;
             }
-            this.changeBowler();
+            if (this.currentBowler.getOver() == (this.overs / 5)) {
+                this.changeBowler();
+            }
+            else {
+                this.currentBowler.addOver();
+            }
         }
     }
     addBowlingData(shot) {
@@ -65,13 +70,18 @@ class Game {
     }
     changeBowler() {
         this.currentBowler = this.bowlingTeam.getBowler();
-        this.currentBowler.setIsBowl();
     }
     getCurrentBatsman() {
         return this.currentBatsman;
     }
     getCurrentBowler() {
         return this.currentBowler;
+    }
+    setOvers(over) {
+        this.overs = over;
+    }
+    getOvers() {
+        return this.overs;
     }
 }
 exports.Game = Game;

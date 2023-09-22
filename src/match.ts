@@ -1,13 +1,11 @@
 import { Game } from "./game";
-import { Player } from "./player";
 import { Team } from "./team";
 
 export class Match {
     private battingTeam: Team;
     private bowlingTeam: Team;
-    // private currentBatsman!: Player;
-    // private currentBowler!: Player;
-    private overs : number = 0;
+    public innings!: Game;
+    private overs! : number;
 
     constructor(team1: Team, team2: Team) {
         if (team1.name == team2.name) {
@@ -25,11 +23,8 @@ export class Match {
             this.bowlingTeam = temp;
         }
     }
-    setOvers(over : number) : void{
+    setOvers(over: number): void {
         this.overs = over
-    }
-    getOvers(){
-        return this.overs
     }
     getBattingTeam(): Team {
         return this.battingTeam;
@@ -46,19 +41,21 @@ export class Match {
     getTossLoserTeam(): Team {
         return this.bowlingTeam;
     }
-
-    // getCurrentBatsman(): Player {
-    //     return this.currentBatsman;
-    // }
-
-    // getCurrentBowler(): Player {
-    //     return this.currentBowler;
-    // }
-
-    startGame(game: Game): void {
-        for (let i = 1; i <= 30; i++) {
-            game.hit();
+    autoPlay(){
+        for (let i = 1; i <= this.overs * 6; i++) {
+            this.innings.hit();
         }
+    }
+    startGame(): void {
+        this.innings = new Game(this.battingTeam , this.bowlingTeam);
+        this.innings.setOvers(this.overs);
+        this.autoPlay()
+    }
+    changeInnings(){
+        this.innings = new Game(this.bowlingTeam , this.battingTeam);
+        this.innings.setOvers(this.overs);
+        this.autoPlay()
+
     }
     getWinner() {
         let winner: Team = this.battingTeam.getFantasyPoints() > this.bowlingTeam.getFantasyPoints() ? this.battingTeam : this.bowlingTeam;

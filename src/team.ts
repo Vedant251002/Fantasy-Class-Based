@@ -1,14 +1,11 @@
-import { Player } from "./player";
-
+import { Cricketer } from "./cricketer";
 
 
 export class Team {
-    private players: Player[];
+    private players: Cricketer[];
 
-    private runs: number = 0;
     private wickets: number = 0;
     private over: number = 0;
-    private fantasyPoints: number = 0;
     private balls: number = 0;
 
     static allowedBatsman: number = 5;
@@ -34,18 +31,18 @@ export class Team {
         return this;
     }
 
-    getPlayers(): Player[] {
+    getPlayers(): Cricketer[] {
         return this.players;
     }
 
-    addPlayer(players: Player[]): void {
+    addPlayer(players: Cricketer[]): void {
         this.validatePlayers(players);
         this.validatePlayerRole(players);
         this.players = players;
     }
 
 
-    validatePlayers(players: Player[]): void {
+    validatePlayers(players: Cricketer[]): void {
 
         if (players.length != 11) {
             throw new Error("Please add 11 players");
@@ -68,7 +65,7 @@ export class Team {
         this.players.splice(playerIndex, 1);
     }
 
-    validatePlayerRole(players: Player[]): void {
+    validatePlayerRole(players: Cricketer[]): void {
         let batsmanCount = players.filter(player => player.getRole() == "Batsman").length;
         let bowlerCount = players.filter(player => player.getRole() == "Bowler").length;
         let wicketKeeperCount = players.filter(player => player.getRole() == "Wicketkeeper").length;
@@ -83,46 +80,42 @@ export class Team {
         }
     }
 
-    setCaptain(player: Player): void {
+    setCaptain(player: Cricketer): void {
         if (player.getIsViceCaptain()) {
             throw new Error("This player is already selected for captain or vice captain");
         }
         player.setIsCaptain();
+        
     }
 
-    setViceCaptain(player: Player): void {
+    setViceCaptain(player: Cricketer): void {
         if (player.getIsCaptain()) {
             throw new Error("This player is already selected for captain or vice captain");
         }
         player.setIsViceCaptain();
     }
 
-    getCaptain(): Player {
+    getCaptain(): Cricketer {
         return this.players.filter(player => player.getIsCaptain() == true)[0];
     }
 
-    getViceCaptain(): Player {
+    getViceCaptain(): Cricketer {
         return this.players.filter(player => player.getIsViceCaptain() == true)[0];
     }
 
-    setRuns(): void {
-        this.runs = this.players.reduce((runs: number, player: Player) => {
+
+    getRuns(): number {
+        return this.players.reduce((runs: number, player: Cricketer) => {
             return runs + player.getRuns();
         }, 0);
     }
-    setFantasyPoints(): void {
-        this.fantasyPoints = this.players.reduce((points: number, player: Player) => {
+    getFantasyPoints(): number {
+        return this.players.reduce((points: number, player: Cricketer) => {
             return points + player.getFantasyPoints();
         }, 0);
     }
-    getRuns(): number {
-        return this.runs;
-    }
-    getFantasyPoints(): number {
-        return this.fantasyPoints;
-    }
 
-    getBatsman(): Player {
+    getBatsman(): Cricketer {
 
         return this.players.filter(player => {
             if (player.getIsBat() == false) {
@@ -131,21 +124,23 @@ export class Team {
         })[0];
 
     }
-    getBowler(): Player {
+    getBowler(): Cricketer {
         return this.players.filter(player => {
-            if (player.getRole() == "Bowler" && player.getIsBowl() == false) {
+            if (player.getRole() == "Bowler" && player.getOver() == 0 ) {
                 return player;
             }
         })[0];
     }
+    
     addWickets(): void {
         this.wickets += 1;
     }
     getWickets(): number {
         return this.wickets;
     }
+
     addOvers(): void {
-        this.over += 1;
+        this.over+= 1;
     }
     getOvers(): number {
         return this.over;

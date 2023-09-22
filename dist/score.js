@@ -7,7 +7,7 @@ class Score {
         this.team = team;
     }
     getScore() {
-        let teamScore = `${this.team.getName()}  -- ${this.team.getRuns()}/${this.team.getWickets()}  -- Fantasy points - ${this.team.getFantasyPoints()}`;
+        let teamScore = `${this.team.getName()}  -- ${this.team.getRuns()}/${this.team.getWickets()}   --  Balls -- ${this.team.getBalls()} -- Fantasy points - ${this.team.getFantasyPoints()}`;
         console.log(teamScore);
         console.log();
         this.team.getPlayers().map((player, index) => {
