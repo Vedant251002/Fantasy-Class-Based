@@ -1,9 +1,9 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-const batsman_1 = require("./batsman");
+const player_1 = require("./player");
 class PlayerMapper {
     static toDomain(player) {
-        return new batsman_1.Batsman(player.id, player.name, player.role, player.credit);
+        return new player_1.Player(player.id, player.name, player.playingRole, player.credit);
     }
 }
 exports.default = PlayerMapper;

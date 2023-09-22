@@ -4,8 +4,9 @@ exports.Match = void 0;
 class Match {
     battingTeam;
     bowlingTeam;
-    currentBatsman;
-    currentBowler;
+    // private currentBatsman!: Player;
+    // private currentBowler!: Player;
+    overs = 0;
     constructor(team1, team2) {
         if (team1.name == team2.name) {
             throw new Error('Both team names are same');
@@ -21,6 +22,12 @@ class Match {
             this.bowlingTeam = temp;
         }
     }
+    setOvers(over) {
+        this.overs = over;
+    }
+    getOvers() {
+        return this.overs;
+    }
     getBattingTeam() {
         return this.battingTeam;
     }
@@ -33,12 +40,12 @@ class Match {
     getTossLoserTeam() {
         return this.bowlingTeam;
     }
-    getCurrentBatsman() {
-        return this.currentBatsman;
-    }
-    getCurrentBowler() {
-        return this.currentBowler;
-    }
+    // getCurrentBatsman(): Player {
+    //     return this.currentBatsman;
+    // }
+    // getCurrentBowler(): Player {
+    //     return this.currentBowler;
+    // }
     startGame(game) {
         for (let i = 1; i <= 30; i++) {
             game.hit();

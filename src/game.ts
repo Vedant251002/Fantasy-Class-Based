@@ -7,7 +7,7 @@ export class Game {
     private bowlingTeam!: Team;
     private currentBatsman!: Player;
     private currentBowler!: Player;
-
+    
     constructor(battingTeam: Team, bowlingTeam: Team) {
         this.battingTeam = battingTeam;
         this.bowlingTeam = bowlingTeam;
@@ -19,7 +19,7 @@ export class Game {
         this.currentBatsman.addBalls();
         this.bowlingTeam.addBalls();
         this.updateOver();
-        let shot = Player.shots();
+        let shot = Shot.shots();
         this.addBowlingData(shot);
         this.addBattingData(shot);
         this.battingTeam.setRuns();
@@ -74,4 +74,13 @@ export class Game {
         this.currentBowler = this.bowlingTeam.getBowler();
         this.currentBowler.setIsBowl();
     }
+
+    getCurrentBatsman(): Player {
+        return this.currentBatsman;
+    }
+
+    getCurrentBowler(): Player {
+        return this.currentBowler;
+    }
+
 }

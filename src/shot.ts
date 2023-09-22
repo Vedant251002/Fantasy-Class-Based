@@ -1,3 +1,5 @@
+import { ShotMapper } from "./shotsMapper";
+
 export const shots = [
     { name: "Single", point: 1, runs: 1 },
     { name: "Double", point: 2, runs: 2 },
@@ -16,6 +18,11 @@ export class Shot {
         this.name = name;
         this.point = point;
         this.runs = runs;
+    }
+
+    static shots(): Shot {
+        let random = Math.floor(Math.random() * 7);
+        return ShotMapper.toDomain(shots[random]);
     }
     getName(): string {
         return this.name;

@@ -5,8 +5,9 @@ import { Team } from "./team";
 export class Match {
     private battingTeam: Team;
     private bowlingTeam: Team;
-    private currentBatsman!: Player;
-    private currentBowler!: Player;
+    // private currentBatsman!: Player;
+    // private currentBowler!: Player;
+    private overs : number = 0;
 
     constructor(team1: Team, team2: Team) {
         if (team1.name == team2.name) {
@@ -24,7 +25,12 @@ export class Match {
             this.bowlingTeam = temp;
         }
     }
-
+    setOvers(over : number) : void{
+        this.overs = over
+    }
+    getOvers(){
+        return this.overs
+    }
     getBattingTeam(): Team {
         return this.battingTeam;
     }
@@ -41,13 +47,13 @@ export class Match {
         return this.bowlingTeam;
     }
 
-    getCurrentBatsman(): Player {
-        return this.currentBatsman;
-    }
+    // getCurrentBatsman(): Player {
+    //     return this.currentBatsman;
+    // }
 
-    getCurrentBowler(): Player {
-        return this.currentBowler;
-    }
+    // getCurrentBowler(): Player {
+    //     return this.currentBowler;
+    // }
 
     startGame(game: Game): void {
         for (let i = 1; i <= 30; i++) {

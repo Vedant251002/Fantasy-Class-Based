@@ -1,7 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.Game = void 0;
-const player_1 = require("./player");
+const shot_1 = require("./shot");
 class Game {
     battingTeam;
     bowlingTeam;
@@ -17,7 +17,7 @@ class Game {
         this.currentBatsman.addBalls();
         this.bowlingTeam.addBalls();
         this.updateOver();
-        let shot = player_1.Player.shots();
+        let shot = shot_1.Shot.shots();
         this.addBowlingData(shot);
         this.addBattingData(shot);
         this.battingTeam.setRuns();
@@ -66,6 +66,12 @@ class Game {
     changeBowler() {
         this.currentBowler = this.bowlingTeam.getBowler();
         this.currentBowler.setIsBowl();
+    }
+    getCurrentBatsman() {
+        return this.currentBatsman;
+    }
+    getCurrentBowler() {
+        return this.currentBowler;
     }
 }
 exports.Game = Game;

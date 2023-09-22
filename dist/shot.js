@@ -1,6 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.Shot = exports.shots = void 0;
+const shotsMapper_1 = require("./shotsMapper");
 exports.shots = [
     { name: "Single", point: 1, runs: 1 },
     { name: "Double", point: 2, runs: 2 },
@@ -18,6 +19,10 @@ class Shot {
         this.name = name;
         this.point = point;
         this.runs = runs;
+    }
+    static shots() {
+        let random = Math.floor(Math.random() * 7);
+        return shotsMapper_1.ShotMapper.toDomain(exports.shots[random]);
     }
     getName() {
         return this.name;
