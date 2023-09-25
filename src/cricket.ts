@@ -4,7 +4,7 @@ import { Player } from "./player";
 import { Shot } from "./shot";
 import { Team } from "./team";
 
-export class Game extends Match {
+export class Cricket extends Match {
     private battingTeam!: Team;
     private bowlingTeam!: Team;
     private currentBatsman!: Cricketer;

@@ -1,4 +1,3 @@
-import { Game } from "./game";
 import { Team } from "./team";
 
 export class Match {
