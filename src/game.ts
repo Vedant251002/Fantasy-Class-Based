@@ -1,9 +1,10 @@
 import { Cricketer } from "./cricketer";
+import { Match } from "./match";
 import { Player } from "./player";
 import { Shot } from "./shot";
 import { Team } from "./team";
 
-export class Game {
+export class Game extends Match {
     private battingTeam!: Team;
     private bowlingTeam!: Team;
     private currentBatsman!: Cricketer;
@@ -11,10 +12,8 @@ export class Game {
     private overs : number = 0;
 
     constructor(battingTeam: Team, bowlingTeam: Team) {
-        this.battingTeam = battingTeam;
-        this.bowlingTeam = bowlingTeam;
-        this.changeBatsman();
-        this.changeBowler();
+        super(battingTeam , bowlingTeam)
+
     }
 
     hit(): void {
@@ -73,7 +72,11 @@ export class Game {
 
     changeBatsman(): void {
         this.currentBatsman = this.battingTeam.getBatsman();
-        this.currentBatsman.setIsBat();
+        
+        if(this.currentBatsman){
+
+            this.currentBatsman.setIsBat();
+        }
     }
 
     changeBowler(): void {
@@ -92,5 +95,25 @@ export class Game {
     }
     getOvers(): number{
         return this.overs
+    }
+    autoPlay(){
+        for (let i = 1; i <= this.overs * 6; i++) {
+            this.hit();
+        }
+    }
+    startGame(): void {
+        this.battingTeam = this.getHomeTeam();
+        this.bowlingTeam = this.getOpponentTeam();
+        this.changeBatsman();
+        this.changeBowler();
+        this.autoPlay()
+    }
+    changeInnings(){
+        this.battingTeam = this.getOpponentTeam() 
+        this.bowlingTeam = this.getHomeTeam()
+        this.changeBatsman();
+        this.changeBowler();
+        this.autoPlay()
+
     }
 }

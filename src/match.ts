@@ -2,63 +2,63 @@ import { Game } from "./game";
 import { Team } from "./team";
 
 export class Match {
-    private battingTeam: Team;
-    private bowlingTeam: Team;
-    public innings!: Game;
-    private overs! : number;
+    private homeTeam: Team;
+    private opponentTeam: Team;
+    // public innings!: Game;
+    // private overs! : number;
 
     constructor(team1: Team, team2: Team) {
         if (team1.name == team2.name) {
             throw new Error('Both team names are same');
         }
-        this.battingTeam = team1;
-        this.bowlingTeam = team2;
+        this.homeTeam = team1;
+        this.opponentTeam = team2;
     }
 
     toss(): void {
         let random = Math.floor(Math.random() * 2);
         if (random == 1) {
-            let temp = this.battingTeam;
-            this.battingTeam = this.bowlingTeam;
-            this.bowlingTeam = temp;
+            let temp = this.homeTeam;
+            this.homeTeam = this.opponentTeam;
+            this.opponentTeam = temp;
         }
     }
-    setOvers(over: number): void {
-        this.overs = over
-    }
-    getBattingTeam(): Team {
-        return this.battingTeam;
+    // setOvers(over: number): void {
+    //     this.overs = over
+    // }
+    getHomeTeam(): Team {
+        return this.homeTeam;
     }
 
-    getBowlingTeam(): Team {
-        return this.bowlingTeam;
+    getOpponentTeam(): Team {
+        return this.opponentTeam;
     }
 
     getTossWinnerTeam(): Team {
-        return this.battingTeam;
+        return this.homeTeam;
     }
 
     getTossLoserTeam(): Team {
-        return this.bowlingTeam;
+        return this.opponentTeam;
     }
-    autoPlay(){
-        for (let i = 1; i <= this.overs * 6; i++) {
-            this.innings.hit();
-        }
-    }
-    startGame(): void {
-        this.innings = new Game(this.battingTeam , this.bowlingTeam);
-        this.innings.setOvers(this.overs);
-        this.autoPlay()
-    }
-    changeInnings(){
-        this.innings = new Game(this.bowlingTeam , this.battingTeam);
-        this.innings.setOvers(this.overs);
-        this.autoPlay()
+    // autoPlay(){
+    //     for (let i = 1; i <= this.overs * 6; i++) {
+    //         this.innings.hit();
+    //     }
+    // }
+    // startGame(): void {
+    //     this.innings = new Game(this.homeTeam , this.opponentTeam);
+    //     this.innings.setOvers(this.overs);
+    //     this.autoPlay()
+    // }
+    // changeInnings(){
+    //     this.innings = new Game(this.opponentTeam , this.homeTeam);
+    //     this.innings.setOvers(this.overs);
+    //     this.autoPlay()
 
-    }
+    // }
     getWinner() {
-        let winner: Team = this.battingTeam.getFantasyPoints() > this.bowlingTeam.getFantasyPoints() ? this.battingTeam : this.bowlingTeam;
+        let winner: Team = this.homeTeam.getFantasyPoints() > this.opponentTeam.getFantasyPoints() ? this.homeTeam : this.opponentTeam;
         return console.log(winner.getName(), 'has won the match');
     }
 }

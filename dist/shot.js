@@ -22,6 +22,9 @@ class Shot {
     }
     static shots() {
         let random = Math.floor(Math.random() * 7);
+        if (random == 6) {
+            random = Math.floor(Math.random() * 7);
+        }
         return shotsMapper_1.ShotMapper.toDomain(exports.shotsArray[random]);
     }
     getName() {

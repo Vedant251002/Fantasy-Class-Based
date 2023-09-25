@@ -1,18 +1,16 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.Game = void 0;
+const match_1 = require("./match");
 const shot_1 = require("./shot");
-class Game {
+class Game extends match_1.Match {
     battingTeam;
     bowlingTeam;
     currentBatsman;
     currentBowler;
     overs = 0;
     constructor(battingTeam, bowlingTeam) {
-        this.battingTeam = battingTeam;
-        this.bowlingTeam = bowlingTeam;
-        this.changeBatsman();
-        this.changeBowler();
+        super(battingTeam, bowlingTeam);
     }
     hit() {
         if (this.battingTeam.getWickets() == 10) {
@@ -66,7 +64,9 @@ class Game {
     }
     changeBatsman() {
         this.currentBatsman = this.battingTeam.getBatsman();
-        this.currentBatsman.setIsBat();
+        if (this.currentBatsman) {
+            this.currentBatsman.setIsBat();
+        }
     }
     changeBowler() {
         this.currentBowler = this.bowlingTeam.getBowler();
@@ -82,6 +82,25 @@ class Game {
     }
     getOvers() {
         return this.overs;
+    }
+    autoPlay() {
+        for (let i = 1; i <= this.overs * 6; i++) {
+            this.hit();
+        }
+    }
+    startGame() {
+        this.battingTeam = this.getHomeTeam();
+        this.bowlingTeam = this.getOpponentTeam();
+        this.changeBatsman();
+        this.changeBowler();
+        this.autoPlay();
+    }
+    changeInnings() {
+        this.battingTeam = this.getOpponentTeam();
+        this.bowlingTeam = this.getHomeTeam();
+        this.changeBatsman();
+        this.changeBowler();
+        this.autoPlay();
     }
 }
 exports.Game = Game;
