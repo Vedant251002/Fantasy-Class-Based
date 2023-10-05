@@ -1,16 +1,33 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.Cricket = void 0;
-const match_1 = require("./match");
 const shot_1 = require("./shot");
-class Cricket extends match_1.Match {
+/* export interface Icricket{
+    setOvers(over : number): void
+    startGame(): void
+    changeInnings(): void
+} */
+class Cricket {
     battingTeam;
     bowlingTeam;
     currentBatsman;
     currentBowler;
     overs = 0;
     constructor(battingTeam, bowlingTeam) {
-        super(battingTeam, bowlingTeam);
+        if (battingTeam.name == bowlingTeam.name) {
+            throw new Error('Both team names are same');
+        }
+        this.battingTeam = battingTeam;
+        this.bowlingTeam = bowlingTeam;
+    }
+    toss() {
+        let random = Math.floor(Math.random() * 2);
+        if (random == 1) {
+            let temp = this.battingTeam;
+            this.battingTeam = this.bowlingTeam;
+            this.bowlingTeam = temp;
+        }
+        console.log(`${this.battingTeam.getName()} has won the toss !`);
     }
     hit() {
         if (this.battingTeam.getWickets() == 10) {
@@ -96,11 +113,28 @@ class Cricket extends match_1.Match {
         this.autoPlay();
     }
     changeInnings() {
-        this.battingTeam = this.getOpponentTeam();
-        this.bowlingTeam = this.getHomeTeam();
+        let temp = this.battingTeam;
+        this.battingTeam = this.bowlingTeam;
+        this.bowlingTeam = temp;
         this.changeBatsman();
         this.changeBowler();
         this.autoPlay();
+    }
+    getTossWinnerTeam() {
+        return this.battingTeam;
+    }
+    getTossLoserTeam() {
+        return this.bowlingTeam;
+    }
+    getHomeTeam() {
+        return this.battingTeam;
+    }
+    getOpponentTeam() {
+        return this.bowlingTeam;
+    }
+    getWinner() {
+        let winner = this.battingTeam.getFantasyPoints() > this.bowlingTeam.getFantasyPoints() ? this.battingTeam : this.bowlingTeam;
+        return console.log(winner.getName(), 'has won the match');
     }
 }
 exports.Cricket = Cricket;

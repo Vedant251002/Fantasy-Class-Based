@@ -1,26 +1,47 @@
 import { Cricketer } from "./cricketer";
-import { Match } from "./match";
+import { Imatch } from "./interface";
 import { Player } from "./player";
 import { Shot } from "./shot";
-import { Team } from "./team";
+import { CricketTeam } from "./cricketTeam";
 
-export class Cricket extends Match {
-    private battingTeam!: Team;
-    private bowlingTeam!: Team;
+/* export interface Icricket{
+    setOvers(over : number): void
+    startGame(): void
+    changeInnings(): void
+} */
+
+export class Cricket implements Imatch {
+    private battingTeam!: CricketTeam;
+    private bowlingTeam!: CricketTeam;
     private currentBatsman!: Cricketer;
     private currentBowler!: Cricketer;
     private overs : number = 0;
 
-    constructor(battingTeam: Team, bowlingTeam: Team) {
-        super(battingTeam , bowlingTeam)
+    constructor(battingTeam: CricketTeam, bowlingTeam: CricketTeam) {
+        if (battingTeam.name == bowlingTeam.name) {
+            throw new Error('Both team names are same');
+        }
+        this.battingTeam = battingTeam;
+        this.bowlingTeam = bowlingTeam;
 
     }
-
+    toss(): void {
+        let random = Math.floor(Math.random() * 2);
+        if (random == 1) {
+            let temp = this.battingTeam;
+            this.battingTeam = this.bowlingTeam;
+            this.bowlingTeam = temp;
+        }
+         console.log(`${this.battingTeam.getName()} has won the toss !`);
+         
+        
+    }
     hit(): void {
         if (this.battingTeam.getWickets() == 10) {
             return 
         }
         this.currentBatsman.addBalls();
+        
         this.bowlingTeam.addBalls();
         this.updateOver();
         let shot = Shot.shots();
@@ -100,6 +121,7 @@ export class Cricket extends Match {
         for (let i = 1; i <= this.overs * 6; i++) {
             this.hit();
         }
+
     }
     startGame(): void {
         this.battingTeam = this.getHomeTeam();
@@ -107,13 +129,33 @@ export class Cricket extends Match {
         this.changeBatsman();
         this.changeBowler();
         this.autoPlay()
+        
     }
     changeInnings(){
-        this.battingTeam = this.getOpponentTeam() 
-        this.bowlingTeam = this.getHomeTeam()
+        let temp = this.battingTeam
+        this.battingTeam = this.bowlingTeam; 
+        this.bowlingTeam = temp
         this.changeBatsman();
         this.changeBowler();
         this.autoPlay()
 
+    }
+    getTossWinnerTeam(): CricketTeam {
+        return this.battingTeam;
+    }
+
+    getTossLoserTeam(): CricketTeam {
+        return this.bowlingTeam;
+    }
+    getHomeTeam(): CricketTeam {
+        return this.battingTeam;
+    }
+
+    getOpponentTeam(): CricketTeam {
+        return this.bowlingTeam;
+    }
+    getWinner() {
+        let winner: CricketTeam = this.battingTeam.getFantasyPoints() > this.bowlingTeam.getFantasyPoints() ? this.battingTeam : this.bowlingTeam;
+        return console.log(winner.getName(), 'has won the match');
     }
 }

@@ -1,7 +1,8 @@
-import { Team } from "./team";
+import { Iteam } from "./interface";
+import { CricketTeam } from "./cricketTeam";
 
 export class Score {
-    constructor(public team: Team) {
+    constructor(public team: CricketTeam) {
     }
 
     getScore(): void {

@@ -9,5 +9,11 @@
     "start": "concurrently npm:start:*"
   },
   "author": "",
-  "license": "ISC"
+  "license": "ISC",
+  "dependencies": {
+    "prompt-sync": "^4.2.0"
+  },
+  "devDependencies": {
+    "@types/node": "^20.8.2"
+  }
 }
